@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hentry Fryzen | Anime Portfolio</title>
+  <meta name="description" content="Anime-style portfolio of Hentry Fryzen — Laravel/PHP backend engineer in Dubai." />
+
+  <style>
+    :root{
+      --bg1:#050814;
+      --bg2:#0b1026;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.7);
+      --brand:#7c3aed;   /* purple */
+      --brand2:#22d3ee;  /* cyan */
+      --glow: rgba(124,58,237,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
+      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(124,58,237,.25), transparent 60%),
+        radial-gradient(1000px 600px at 90% 30%, rgba(34,211,238,.18), transparent 55%),
+        radial-gradient(900px 700px at 40% 90%, rgba(236,72,153,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+
+    /* Animated "anime sky" grain + scanlines */
+    .grain, .scanlines{
+      pointer-events:none;
+      position:fixed; inset:0;
+      z-index:1;
+      opacity:.18;
+      mix-blend-mode:overlay;
+    }
+    .grain{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      animation: grainMove 7s steps(10) infinite;
+    }
+    @keyframes grainMove{
+      0%{transform:translate(0,0)}
+      20%{transform:translate(-6%,4%)}
+      40%{transform:translate(6%,-2%)}
+      60%{transform:translate(-4%,-6%)}
+      80%{transform:translate(8%,6%)}
+      100%{transform:translate(0,0)}
+    }
+    .scanlines{
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.06),
+        rgba(255,255,255,.06) 1px,
+        transparent 1px,
+        transparent 6px
+      );
+      opacity:.08;
+      animation: scan 6s linear infinite;
+    }
+    @keyframes scan{
+      from{transform:translateY(-20px)}
+      to{transform:translateY(20px)}
+    }
+
+    /* Floating sakura particles */
+    canvas#sakura{
+      position:fixed; inset:0;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    /* Cursor glow + trail */
+    .cursor, .cursor2{
+      position:fixed;
+      top:0; left:0;
+      width:14px; height:14px;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+      z-index:9999;
+      mix-blend-mode:screen;
+    }
+    .cursor{
+      background: radial-gradient(circle, rgba(34,211,238,.9), rgba(34,211,238,0) 70%);
+      filter: drop-shadow(0 0 18px rgba(34,211,238,.6));
+    }
+    .cursor2{
+      width:44px; height:44px;
+      background: radial-gradient(circle, rgba(124,58,237,.35), rgba(124,58,237,0) 70%);
+      filter: blur(1px);
+      opacity:.9;
+    }
+
+    /* Layout */
+    .wrap{
+      position:relative;
+      z-index:2;
+      max-width: 1100px;
+      margin:0 auto;
+      padding: 28px 18px 70px;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 12px 2px 24px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(124,58,237,.9), rgba(34,211,238,.8));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 30px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: conic-gradient(from 180deg, rgba(255,255,255,.0), rgba(255,255,255,.35), rgba(255,255,255,0));
+      animation: spin 3.5s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .brand h3{margin:0; font-size:16px; letter-spacing:.2px}
+    .brand span{display:block; color:var(--muted); font-size:12px; margin-top:2px}
+
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      margin-left:14px;
+      font-size:13px;
+      position:relative;
+    }
+    nav a:after{
+      content:"";
+      position:absolute; left:0; bottom:-6px;
+      width:0; height:2px;
+      background: linear-gradient(90deg, var(--brand), var(--brand2));
+      transition:width .25s ease;
+    }
+    nav a:hover{color:var(--text)}
+    nav a:hover:after{width:100%}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      align-items:stretch;
+      margin-top: 6px;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+      nav{display:none}
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(800px 260px at 30% 0%, rgba(124,58,237,.25), transparent 60%),
+                  radial-gradient(700px 240px at 90% 20%, rgba(34,211,238,.18), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+
+    .heroMain{
+      padding: 26px 22px;
+      animation: floatIn .7s ease both;
+    }
+    @keyframes floatIn{
+      from{opacity:0; transform:translateY(16px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.15);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:99px;
+      background: linear-gradient(90deg, var(--brand), var(--brand2));
+      box-shadow: 0 0 18px var(--glow);
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: 44px;
+      line-height:1.05;
+      letter-spacing:.3px;
+    }
+    .subtitle{
+      color: var(--muted);
+      font-size: 15px;
+      line-height:1.7;
+      max-width: 62ch;
+    }
+
+    .ctaRow{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .btn{
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing:.2px;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.26)}
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(124,58,237,.9), rgba(34,211,238,.9));
+      border-color: transparent;
+      color: #06101a;
+      box-shadow: 0 10px 30px rgba(124,58,237,.25);
+    }
+
+    .heroSide{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      animation: floatIn .85s ease both;
+      animation-delay:.06s;
+    }
+    .stat{
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+    }
+    .stat b{display:block; font-size:14px; margin-bottom:6px}
+    .stat span{color:var(--muted); font-size:13px; line-height:1.55}
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+    }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
+    .tile{
+      padding: 18px;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .tile:hover{transform: translateY(-3px); border-color: rgba(255,255,255,.24)}
+    .tile h4{margin:0 0 8px; font-size:14px}
+    .tile p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+
+    footer{
+      margin-top: 20px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      text-align:center;
+      padding: 10px 0 0;
+    }
+
+    /* Anime "shine" on hover */
+    .shine{
+      position:relative;
+      overflow:hidden;
+    }
+    .shine:after{
+      content:"";
+      position:absolute;
+      top:-30%;
+      left:-60%;
+      width: 60%;
+      height: 160%;
+      transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transition: left .55s ease;
+      pointer-events:none;
+    }
+    .shine:hover:after{left:120%}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important; transition:none!important}
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="sakura"></canvas>
+  <div class="grain"></div>
+  <div class="scanlines"></div>
+
+  <div class="cursor2"></div>
+  <div class="cursor"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h3>Hentry Fryzen</h3>
+          <span>Senior Backend Engineer • Laravel / PHP • Dubai</span>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#skills">Skills</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="card heroMain shine">
+        <div style="padding: 26px 22px;">
+          <span class="tag"><span class="dot"></span> Anime-style portfolio • GitHub Pages</span>
+          <h1>Building fast, scalable<br/>backend systems.</h1>
+          <div class="subtitle">
+            I’m a backend engineer focused on Laravel/PHP, REST APIs, data pipelines, and performance optimization.
+            Currently working on large-scale e-commerce and affiliate marketing systems in Dubai.
+          </div>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="https://www.linkedin.com/in/hentryfryzen" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a class="btn" href="https://github.com/hentryfryzen" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a class="btn" href="#contact">Contact</a>
+          </div>
+
+          <div class="pillRow" id="skills" style="margin-top:16px">
+            <span class="pill">Laravel</span>
+            <span class="pill">Symfony</span>
+            <span class="pill">REST APIs</span>
+            <span class="pill">PostgreSQL</span>
+            <span class="pill">MySQL</span>
+            <span class="pill">Docker</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card heroSide">
+        <div class="stat shine">
+          <b>Current</b>
+          <span>Software Engineer at Delupe A/S (Dubai). Building scalable web + backend platforms.</span>
+        </div>
+
+        <div class="stat shine" id="work">
+          <b>What I do</b>
+          <span>System optimization, feed/import pipelines, integrations, and reliable APIs for high-volume products.</span>
+        </div>
+
+        <div class="stat shine">
+          <b>Availability</b>
+          <span>Open to strong backend opportunities in Dubai / UAE.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card tile shine">
+        <h4>⚡ Performance</h4>
+        <p>Optimize queries, caching, and batch processing to keep systems stable under load.</p>
+      </div>
+      <div class="card tile shine">
+        <h4>🧩 Integrations</h4>
+        <p>Affiliate networks, product feeds, APIs, and automation pipelines end-to-end.</p>
+      </div>
+      <div class="card tile shine">
+        <h4>🛡️ Clean Architecture</h4>
+        <p>Maintainable, testable code with solid design patterns and pragmatic engineering.</p>
+      </div>
+    </section>
+
+    <footer id="contact">
+      Contact: <span style="color:rgba(255,255,255,.75)">hentryfryzen@gmail.com</span> •
+      <span style="color:rgba(255,255,255,.75)">Dubai, UAE</span>
+      <div style="margin-top:6px; opacity:.7">© <span id="y"></span> Hentry Fryzen</div>
+    </footer>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Cursor glow + smooth follow
+    const c1 = document.querySelector('.cursor');
+    const c2 = document.querySelector('.cursor2');
+    let mx = innerWidth/2, my = innerHeight/2;
+    let x1 = mx, y1 = my, x2 = mx, y2 = my;
+
+    window.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+    }, { passive:true });
+
+    function animateCursor(){
+      x1 += (mx - x1) * 0.22; y1 += (my - y1) * 0.22;
+      x2 += (mx - x2) * 0.10; y2 += (my - y2) * 0.10;
+      c1.style.transform = `translate(${x1}px, ${y1}px)`;
+      c2.style.transform = `translate(${x2}px, ${y2}px)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Sakura particles (simple)
+    const canvas = document.getElementById('sakura');
+    const ctx = canvas.getContext('2d');
+    let w, h, petals;
+
+    function resize(){
+      w = canvas.width = innerWidth;
+      h = canvas.height = innerHeight;
+      petals = Array.from({length: 42}, () => ({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: 3 + Math.random()*4,
+        vy: 0.5 + Math.random()*1.4,
+        vx: -0.6 + Math.random()*1.2,
+        a: Math.random()*Math.PI*2,
+        va: -0.02 + Math.random()*0.04,
+        o: 0.35 + Math.random()*0.35
+      }));
+    }
+    window.addEventListener('resize', resize, { passive:true });
+    resize();
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for(const p of petals){
+        p.x += p.vx + Math.sin(p.a)*0.35;
+        p.y += p.vy;
+        p.a += p.va;
+        if(p.y > h+20){ p.y = -20; p.x = Math.random()*w; }
+        if(p.x < -20) p.x = w+20;
+        if(p.x > w+20) p.x = -20;
+
+        ctx.save();
+        ctx.globalAlpha = p.o;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.a);
+        ctx.fillStyle = 'rgba(255,182,193,1)'; // sakura pink (keep simple)
+        ctx.beginPath();
+        ctx.ellipse(0,0, p.r*1.2, p.r, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>
