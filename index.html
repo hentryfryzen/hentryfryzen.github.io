@@ -116,18 +116,32 @@
     .brand{
       display:flex; align-items:center; gap:12px;
     }
-    .logo{
-      width:40px; height:40px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(124,58,237,.9), rgba(34,211,238,.8));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 30px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-image: url("hentry.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.15),
+        0 8px 22px rgba(0,0,0,.45);
+
+      position: relative;
+      overflow: hidden;
     }
-    .logo:after{
-      content:"";
-      position:absolute; inset:-30%;
-      background: conic-gradient(from 180deg, rgba(255,255,255,.0), rgba(255,255,255,.35), rgba(255,255,255,0));
-      animation: spin 3.5s linear infinite;
+
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      opacity: .35;
+      filter: blur(6px);
+      z-index: -1;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
     .brand h3{margin:0; font-size:16px; letter-spacing:.2px}
@@ -317,6 +331,117 @@
     @media (prefers-reduced-motion: reduce){
       *{animation:none!important; transition:none!important}
     }
+
+
+
+    /* =========================
+          JUMPING BALL (RESUME BUTTON)
+        ========================= */
+      /* =========================
+      REAL BOUNCING BALL EFFECT
+    ========================= */
+      /* =========================
+        RESUME FLOWER BLOOM BALL
+      ========================= */
+
+      nav {
+        display: flex;
+        align-items: center;
+      }
+
+      .resume-ball {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        margin-left: 16px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, var(--brand2), var(--brand));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #06101a;
+        font-weight: 800;
+        font-size: 11px;
+        letter-spacing: .5px;
+
+        box-shadow:
+          0 6px 16px rgba(124,58,237,.45),
+          inset 0 -3px 6px rgba(0,0,0,.25);
+
+        /* gentle breathing */
+        animation: flowerBreath 3.5s ease-in-out infinite;
+      }
+
+      /* CV text */
+      .resume-ball span {
+        position: relative;
+        z-index: 3;
+      }
+
+      /* Petals */
+      .resume-ball::before,
+      .resume-ball::after {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        opacity: 0;
+        transform: scale(0.6);
+        transition: transform .45s ease, opacity .45s ease;
+      }
+
+      /* Inner petals */
+      .resume-ball::before {
+        background:
+          radial-gradient(circle,
+            rgba(255,182,193,.6) 35%,
+            transparent 60%);
+        z-index: 1;
+      }
+
+      /* Outer petals */
+      .resume-ball::after {
+        background:
+          radial-gradient(circle,
+            rgba(124,58,237,.45) 40%,
+            transparent 65%);
+        z-index: 0;
+      }
+
+      /* Bloom on hover */
+      .resume-ball:hover::before {
+        opacity: 1;
+        transform: scale(1.25);
+      }
+
+      .resume-ball:hover::after {
+        opacity: .8;
+        transform: scale(1.6);
+      }
+
+      /* Pause breathing on hover */
+      .resume-ball:hover {
+        animation-play-state: paused;
+      }
+
+      /* Subtle breathing animation */
+      @keyframes flowerBreath {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.04);
+        }
+      }
+
+      /* Hide on small screens */
+      @media (max-width: 900px) {
+        .resume-ball {
+          display: none;
+        }
+      }
+
   </style>
 </head>
 
@@ -342,6 +467,10 @@
         <a href="#skills">Skills</a>
         <a href="#work">Work</a>
         <a href="#contact">Contact</a>
+    <a class="resume-ball" href="https://drive.google.com/uc?export=download&id=1sMuyIHPP5FOfjpU6NSknegjJdO4cDrBO" download
+      aria-label="Download Resume">
+      <span>CV</span>
+    </a>
       </nav>
     </header>
 
@@ -349,9 +478,9 @@
       <div class="card heroMain shine">
         <div style="padding: 26px 22px;">
           <span class="tag"><span class="dot"></span> portfolio</span>
-          <h1>Building fast, scalable<br/>backend systems.</h1>
+          <h1>Building scalable<br/>backend systems.</h1>
           <div class="subtitle">
-            I’m a backend engineer focused on Laravel/PHP, REST APIs, data pipelines, and performance optimization.
+            I’m a Web Developer focused on Laravel/PHP, REST APIs, data pipelines, and performance optimization.
             Currently working on large-scale e-commerce and affiliate marketing systems in Dubai.
           </div>
 
@@ -362,6 +491,8 @@
             <a class="btn" href="https://github.com/hentryfryzen" target="_blank" rel="noreferrer">
               GitHub
             </a>
+        
+
             <a class="btn" href="#contact">Contact</a>
           </div>
 
