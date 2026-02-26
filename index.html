@@ -469,13 +469,11 @@
         <a href="#work">Work</a>
         <a href="#contact">Contact</a>
       <a class="resume-ball"
-           href="/Hentry_Fryzen_Resume.pdf"
-           download="Hentry_Fryzen_Resume.pdf"
-           aria-label="Download Resume">
-          <span>CV</span>
-        </a>
-      <span>CV</span>
-    </a>
+   href="Hentry_Fryzen_Resume.pdf"
+   download="Hentry_Fryzen_Resume.pdf"
+   aria-label="Download Resume">
+  <span>CV</span>
+</a>
       </nav>
     </header>
 
@@ -576,7 +574,7 @@ Senior backend Developer with 5+ years of experience designing high-performance 
    FIX MENU SCROLL BUG
 ========================= */
 
-document.querySelectorAll('nav a').forEach(link => {
+document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   link.addEventListener('click', function(e) {
     e.preventDefault();
     const id = this.getAttribute('href').replace('#','');
