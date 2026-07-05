@@ -20,7 +20,7 @@ export default function Navbar({ activeSection }) {
     <header className="site-header" id="top">
       <nav className="navbar" aria-label="Main navigation">
         <a className="brand" href="#home" onClick={closeMenu} data-cursor="link">
-          <span className="brand-icon" aria-hidden="true">&lt;/&gt;</span>
+          <img className="brand-icon" src="/favicon.png" alt="" aria-hidden="true" />
           <span>
             <strong>{contact.name}</strong>
             <small>Web Developer</small>
