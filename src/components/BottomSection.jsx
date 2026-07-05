@@ -25,10 +25,26 @@ export default function BottomSection() {
           <p>{contact.title} ({contact.subtitle}) · {contact.location}</p>
 
           <div className="contact-lines">
-            <a href={`mailto:${contact.email}`} data-cursor="link">✉ {contact.email}</a>
-            <a href="tel:+971566059005" data-cursor="link">☎ {contact.phoneUae}</a>
-            <a href="tel:+918248375355" data-cursor="link">☎ {contact.phoneIndia}</a>
-            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" data-cursor="link">in linkedin.com/in/hentryfryzen</a>
+            <a href={`mailto:${contact.email}`} data-cursor="link">
+              <Icon name="mail" />
+              {contact.email}
+            </a>
+            <a href="tel:+971566059005" data-cursor="link">
+              <Icon name="phone" />
+              {contact.phoneUae}
+            </a>
+            <a href="tel:+918248375355" data-cursor="link">
+              <Icon name="phone" />
+              {contact.phoneIndia}
+            </a>
+            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" data-cursor="link">
+              <Icon name="linkedin" />
+              LinkedIn
+            </a>
+            <a href={contact.github} target="_blank" rel="noopener noreferrer" data-cursor="link">
+              <Icon name="github" />
+              GitHub
+            </a>
           </div>
         </div>
 
@@ -53,6 +69,7 @@ export default function BottomSection() {
             data-cursor-label="Email"
             whileTap={tapSoft}
           >
+            <Icon name="mail" />
             Send Email →
           </motion.a>
 
@@ -64,7 +81,8 @@ export default function BottomSection() {
             data-cursor-label="CV"
             whileTap={tapSoft}
           >
-            Download CV ⇩
+            <Icon name="download" />
+            Download CV
           </motion.a>
         </div>
       </motion.div>

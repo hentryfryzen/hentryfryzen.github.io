@@ -1147,11 +1147,18 @@ svg {
   min-height: 42px;
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   padding: 0 14px;
   border-radius: 10px;
   color: #e2e8f0;
   background: rgba(0, 0, 0, 0.24);
   border: 1px solid rgba(212, 175, 55, 0.16);
+}
+
+.contact-lines a svg {
+  flex: 0 0 auto;
+  color: var(--green);
+  font-size: 1rem;
 }
 
 .contact-actions {
