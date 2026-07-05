@@ -1,23 +1,77 @@
-const labels = {
-  php: "php",
-  laravel: "L",
-  symfony: "Sf",
-  postgres: "Pg",
-  mysql: "my",
-  docker: "Dk",
-  code: "</>",
-  azure: "Az",
-  nginx: "Nx",
-  apache: "Ap",
-  git: "git",
-  postman: "pm",
-  swagger: "Sw",
+const icons = {
+  php: (
+    <>
+      <ellipse cx="12" cy="12" rx="9" ry="5.5" />
+      <text x="12" y="13.4">PHP</text>
+    </>
+  ),
+  laravel: (
+    <path d="M5 4.5 12 2l7 2.5v8.2L12 22l-7-9.3V4.5Zm2 2.1v5.3l4 5.4V9.2L7 6.6Zm10 0-4 2.6v8.1l4-5.4V6.6Zm-5 1 3.4-2.2L12 4.2 8.6 5.4 12 7.6Z" />
+  ),
+  symfony: (
+    <>
+      <circle cx="12" cy="12" r="8.4" />
+      <text x="12" y="14">sf</text>
+    </>
+  ),
+  postgres: (
+    <>
+      <path d="M5 7c0-2.2 3.1-4 7-4s7 1.8 7 4v10c0 2.2-3.1 4-7 4s-7-1.8-7-4V7Z" />
+      <path d="M5 7c0 2.2 3.1 4 7 4s7-1.8 7-4M5 12c0 2.2 3.1 4 7 4s7-1.8 7-4" />
+    </>
+  ),
+  mysql: (
+    <>
+      <path d="M4 7c0-2.2 3.6-4 8-4s8 1.8 8 4v10c0 2.2-3.6 4-8 4s-8-1.8-8-4V7Z" />
+      <path d="M4 7c0 2.2 3.6 4 8 4s8-1.8 8-4M4 12c0 2.2 3.6 4 8 4s8-1.8 8-4" />
+      <path d="M15.8 5.8c1.4-.2 2.6.1 3.6.9-1.1.2-2 .7-2.7 1.5" />
+    </>
+  ),
+  docker: (
+    <>
+      <path d="M4 12h14.5c.8 0 1.4.7 1.2 1.5C19.1 17.2 15.8 20 11.8 20H9.3C6.4 20 4 17.6 4 14.7V12Z" />
+      <path d="M6 9h3v3H6V9Zm4 0h3v3h-3V9Zm4 0h3v3h-3V9Zm-4-4h3v3h-3V5Z" />
+    </>
+  ),
+  code: <path d="m8.4 16.8-5-4.8 5-4.8 1.4 1.5L6.4 12l3.4 3.3-1.4 1.5Zm7.2 0-1.4-1.5 3.4-3.3-3.4-3.3 1.4-1.5 5 4.8-5 4.8Zm-4.8 2.1-1.9-.6 4.3-13.2 1.9.6-4.3 13.2Z" />,
+  azure: (
+    <path d="M9.7 3h5.1L9.5 18.4h8.7L6.5 21l3.6-6.2H5.8L9.7 3Zm5.7 5.7L20 18.4h-6.1l-2.4-4.1 3.9-5.6Z" />
+  ),
+  nginx: (
+    <>
+      <path d="M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4l8-4.6Z" />
+      <path d="M8.2 16V8h1.9l3.8 5.1V8h1.9v8h-1.9l-3.8-5.1V16H8.2Z" />
+    </>
+  ),
+  apache: (
+    <path d="M18.8 3.5c-3.8.8-7.2 3-9.6 6.2-1.7 2.2-2.8 4.9-3.1 7.8l-2.4 2.9 3.8-1.1c2.7-.8 5.2-2.3 7.1-4.4 2.9-3.2 4.4-7.3 4.2-11.4Zm-2.4 3.1c-.5 2.6-1.8 5-3.6 7-1.2 1.3-2.7 2.3-4.3 3 .4-1.9 1.2-3.7 2.4-5.2 1.5-2 3.4-3.6 5.5-4.8Z" />
+  ),
+  git: (
+    <>
+      <path d="M12 2 22 12 12 22 2 12 12 2Z" />
+      <path d="M8 8h4v4h4v4h-4v-4H8V8Z" />
+    </>
+  ),
+  postman: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m7.2 13.8 8.8-6-3.1 8.9-2.2-2.1-2.6 2.2-.9-3Z" />
+    </>
+  ),
+  swagger: (
+    <>
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z" />
+      <path d="M8.2 9.3c.8-1.2 2.2-1.8 3.8-1.8s3 .6 3.8 1.8l-1.5 1.1c-.5-.7-1.3-1.1-2.3-1.1s-1.8.4-2.3 1.1l-1.5-1.1Zm0 5.4 1.5-1.1c.5.7 1.3 1.1 2.3 1.1s1.8-.4 2.3-1.1l1.5 1.1c-.8 1.2-2.2 1.8-3.8 1.8s-3-.6-3.8-1.8Z" />
+    </>
+  ),
 };
 
 export default function TechIcon({ icon, name }) {
   return (
-    <span className={`app-icon app-icon--${icon}`} title={name}>
-      {labels[icon] || name.slice(0, 2)}
+    <span className={`app-icon app-icon--${icon}`} title={name} aria-label={name}>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        {icons[icon] || icons.code}
+      </svg>
     </span>
   );
 }
