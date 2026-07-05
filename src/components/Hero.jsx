@@ -43,7 +43,7 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p className="hero-copy" variants={fadeUp}>
-            Web Developer with <strong>5+ years</strong> of experience building secure,
+            Web Developer with <strong>6+ years</strong> of experience building secure,
             scalable and high-performance web applications. Specialized in{" "}
             <strong>PHP, Laravel, Symfony, REST APIs, PostgreSQL</strong>, and DevOps.
           </motion.p>

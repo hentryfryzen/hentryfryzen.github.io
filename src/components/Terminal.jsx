@@ -41,7 +41,7 @@ web-developer --php --laravel --symfony
 hentry@portfolio:~$ cat profile.json
 {
   "location": "Dubai, UAE",
-  "experience": "5+ years",
+  "experience": "6+ years",
   "backend": ["PHP", "Laravel", "Symfony", "Core PHP"],
   "database": ["PostgreSQL", "MySQL"],
   "devops": ["Docker", "Azure DevOps", "Nginx"],

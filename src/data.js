@@ -26,7 +26,7 @@ export const heroTech = [
 
 export const stats = [
   {
-    value: "5+",
+    value: "6+",
     label: "Years Experience",
     icon: "user",
   },
