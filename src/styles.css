@@ -1276,6 +1276,13 @@ svg {
   font-size: 0.84rem;
 }
 
+.site-footer button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 800;
+}
+
 /* Custom cursor */
 .custom-cursor-enabled,
 .custom-cursor-enabled * {
